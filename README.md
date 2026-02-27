@@ -1,50 +1,35 @@
-# Uniswap Swap Router
+# ETCswap Swap Router Contracts
 
-[![Tests](https://github.com/Uniswap/swap-router-contracts/workflows/Tests/badge.svg)](https://github.com/Uniswap/swap-router-contracts/actions?query=workflow%3ATests)
-[![Lint](https://github.com/Uniswap/swap-router-contracts/workflows/Lint/badge.svg)](https://github.com/Uniswap/swap-router-contracts/actions?query=workflow%3ALint)
+Smart contracts for combined V2 + V3 swap routing on Ethereum Classic.
 
-This repository contains smart contracts for swapping on the Uniswap V2 and V3 protocols.
+Forked from [Uniswap Swap Router Contracts](https://github.com/Uniswap/swap-router-contracts). The `etcswap` branch contains ETC-specific `POOL_INIT_CODE_HASH` and build artifacts.
 
-## Bug bounty
+## Status: Reference / Deployed
 
-This repository is subject to the Uniswap V3 bug bounty program,
-per the terms defined [here](./bug-bounty.md).
+The SwapRouter02 contract supports both V2 and V3 swaps in a single transaction. Deployed and immutable.
 
-## Local deployment
+## ETC-Specific Changes (etcswap branch)
 
-In order to deploy this code to a local testnet, you should install the npm package
-`@uniswap/swap-router-contracts`
-and import bytecode imported from artifacts located at
-`@uniswap/swap-router-contracts/artifacts/contracts/*/*.json`.
-For example:
+- `POOL_INIT_CODE_HASH` set to `0x7ea2da342810af3c5a9b47258f990aaac829fe1385a1398feb77d0126a85dbef`
+- Build artifacts included for deployment verification
 
-```typescript
-import {
-  abi as SWAP_ROUTER_ABI,
-  bytecode as SWAP_ROUTER_BYTECODE,
-} from '@uniswap/swap-router-contracts/artifacts/contracts/SwapRouter02.sol/SwapRouter02.json'
+## Key Contracts
 
-// deploy the bytecode
-```
+- **SwapRouter02.sol** — Combined V2 + V3 swap router
+- **V2SwapRouter.sol** — V2-specific swap logic
+- **V3SwapRouter.sol** — V3-specific swap logic
+- **ApproveAndCall.sol** — Token approval and swap in one transaction
 
-This will ensure that you are testing against the same bytecode that is deployed to
-mainnet and public testnets, and all Uniswap code will correctly interoperate with
-your local deployment.
+## Related Repos
 
-## Using solidity interfaces
+- [v2-core](https://github.com/etcswap/v2-core) — V2 Factory and Pair contracts
+- [v2-periphery](https://github.com/etcswap/v2-periphery) — V2 Router
+- [sdks](https://github.com/etcswap/sdks) — TypeScript SDK monorepo (router-sdk package)
 
-The swap router contract interfaces are available for import into solidity smart contracts
-via the npm artifact `@uniswap/swap-router-contracts`, e.g.:
+## Local Development
 
-```solidity
-import '@uniswap/swap-router-contracts/contracts/interfaces/ISwapRouter02.sol';
-
-contract MyContract {
-  ISwapRouter02 router;
-
-  function doSomethingWithSwapRouter() {
-    // router.exactInput(...);
-  }
-}
-
+```bash
+yarn install
+npx hardhat compile
+npx hardhat test
 ```
